@@ -1,0 +1,6 @@
+coverage.out
+cstore
+example/simple/simple
+example/redis/redis
+example/gcache/gcache
+example/simpledb/simpledb
