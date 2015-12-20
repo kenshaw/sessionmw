@@ -3,7 +3,6 @@ package sessionmw
 import (
 	"fmt"
 	"html"
-	"log"
 	"net/http"
 	"net/http/httptest"
 	"regexp"
@@ -100,7 +99,6 @@ func TestHandler(t *testing.T) {
 	r1, _ := get(mux, "/id", cookie, t)
 	check(200, r1, t)
 	sessID := strings.TrimSpace(r1.Body.String())
-	log.Printf(">>> %+v", ms.data[sessID])
 	sess, ok := ms.data[sessID].(map[string]interface{})
 	if !ok {
 		t.Fatalf("ms.data should contain %s of type map[string]interface{}", sessID)
