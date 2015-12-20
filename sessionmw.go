@@ -1,3 +1,4 @@
+// Package sessionmw provides a Goji v2 context aware session middleware.
 package sessionmw
 
 import (
@@ -28,7 +29,7 @@ const (
 )
 
 const (
-	// DefaultCookieName is the default cookie name
+	// DefaultCookieName is the default cookie name.
 	DefaultCookieName = "SESSID"
 )
 
@@ -41,13 +42,16 @@ type session struct {
 	data map[string]interface{}
 }
 
-// ID retrieves the id for this session.
+// ID retrieves the id for this session from the context.
 func ID(ctxt context.Context) string {
 	sessID := ctxt.Value(sessionIDContextKey).(string)
 	return sessID
 }
 
 // Set stores a session value into the context.
+//
+// Session values will be saved to the underlying store after Handler has
+// finished.
 func Set(ctxt context.Context, key string, val interface{}) {
 	sess := ctxt.Value(sessionContextKey).(session)
 	sess.Lock()
@@ -55,7 +59,7 @@ func Set(ctxt context.Context, key string, val interface{}) {
 	sess.Unlock()
 }
 
-// Get retrieves a session value from the context.
+// Get retrieves a previously stored session value from the context.
 func Get(ctxt context.Context, key string) (interface{}, bool) {
 	sess := ctxt.Value(sessionContextKey).(session)
 	sess.RLock()
@@ -64,7 +68,7 @@ func Get(ctxt context.Context, key string) (interface{}, bool) {
 	return val, ok
 }
 
-// Delete removes a session value from the context.
+// Delete deletes a stored session value from the context.
 func Delete(ctxt context.Context, key string) {
 	sess := ctxt.Value(sessionContextKey).(session)
 	sess.Lock()
@@ -83,7 +87,7 @@ func CookieName(ctxt context.Context) string {
 	return ctxt.Value(cookieNameContextKey).(string)
 }
 
-// Destroy destroys a session.
+// Destroy destroys a session in the underlying session store.
 //
 // Note that any existing values will continue to remain in the context after
 // destruction. The context should be closed (or destroyed).
@@ -108,18 +112,35 @@ func Destroy(ctxt context.Context, res ...http.ResponseWriter) error {
 
 // Config contains the configuration parameters for the session middleware.
 type Config struct {
-	Secret      string
-	BlockSecret string
+	// Secret is
+	Secret      []byte
+	BlockSecret []byte
 
+	// Store is the underlying session store.
 	Store Store
-	IDFn  IDFn
 
-	Name     string
-	Path     string
-	Domain   string
-	Expires  time.Time
-	MaxAge   time.Duration
-	Secure   bool
+	// IDFn is the id generation func.
+	IDFn IDFn
+
+	// Name is the cookie name.
+	Name string
+
+	// Path is the cookie path.
+	Path string
+
+	// Domain is the cookie domain.
+	Domain string
+
+	// Expires is the cookie expiration time.
+	Expires time.Time
+
+	// MaxAge is the cookie max age.
+	MaxAge time.Duration
+
+	// Secure is the cookie secure flag.
+	Secure bool
+
+	// HttpOnly is the cookie http only flag.
 	HttpOnly bool
 }
 
