@@ -45,8 +45,8 @@ func newMux() (*memStore, *goji.Mux) {
 
 	// create session middleware
 	conf := &Config{
-		Secret:      "LymWKG0UvJFCiXLHdeYJTR1xaAcRvrf7",
-		BlockSecret: "NxyECgzxiYdMhMbsBrUcAAbyBuqKDrpp",
+		Secret:      []byte("LymWKG0UvJFCiXLHdeYJTR1xaAcRvrf7"),
+		BlockSecret: []byte("NxyECgzxiYdMhMbsBrUcAAbyBuqKDrpp"),
 
 		Store: ms,
 		Name:  cookieName,

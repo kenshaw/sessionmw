@@ -15,8 +15,8 @@ import (
 func main() {
 	// create session middleware
 	sessConfig := &sessionmw.Config{
-		Secret:      "LymWKG0UvJFCiXLHdeYJTR1xaAcRvrf7",
-		BlockSecret: "NxyECgzxiYdMhMbsBrUcAAbyBuqKDrpp",
+		Secret:      []byte("LymWKG0UvJFCiXLHdeYJTR1xaAcRvrf7"),
+		BlockSecret: []byte("NxyECgzxiYdMhMbsBrUcAAbyBuqKDrpp"),
 
 		Store: sessionmw.NewMemStore(),
 	}

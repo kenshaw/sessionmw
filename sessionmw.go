@@ -146,12 +146,12 @@ type Config struct {
 
 // Handler provides the goji.Handler for the session middleware.
 func (c Config) Handler(h goji.Handler) goji.Handler {
-	if c.Secret == "" {
-		panic(errors.New("sessionmw config Secret cannot be empty string"))
+	if len(c.Secret) < 1 {
+		panic(errors.New("sessionmw config Secret cannot be empty"))
 	}
 
-	if c.BlockSecret == "" {
-		panic(errors.New("sessionmw config BlockSecret cannot be empty string"))
+	if len(c.BlockSecret) < 1 {
+		panic(errors.New("sessionmw config BlockSecret cannot be empty"))
 	}
 
 	if c.Store == nil {
@@ -159,7 +159,7 @@ func (c Config) Handler(h goji.Handler) goji.Handler {
 	}
 
 	// create securecookie
-	sc := securecookie.New([]byte(c.Secret), []byte(c.BlockSecret))
+	sc := securecookie.New(c.Secret, c.BlockSecret)
 	sc.MaxAge(int(c.MaxAge))
 
 	idFn := defaultIDGen
