@@ -38,8 +38,8 @@ func TestMemStore(t *testing.T) {
 	}
 	wg0.Wait()
 
-	if len(ss.data) != 10 {
-		t.Errorf("ss.data should have length 10, len: %d, %+v", len(ss.data), ss.data)
+	if len(ss.Data) != 10 {
+		t.Errorf("ss.Data should have length 10, len: %d, %+v", len(ss.Data), ss.Data)
 	}
 
 	// retrieve some data
@@ -78,8 +78,8 @@ func TestMemStore(t *testing.T) {
 	}
 	wg2.Wait()
 
-	if len(ss.data) != 0 {
-		t.Errorf("ss.data should have length 0, len: %d, %+v", len(ss.data), ss.data)
+	if len(ss.Data) != 0 {
+		t.Errorf("ss.Data should have length 0, len: %d, %+v", len(ss.Data), ss.Data)
 	}
 
 	// retrieve again and make sure data is not present

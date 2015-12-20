@@ -40,7 +40,7 @@ func TestDefaultIDGen(t *testing.T) {
 	}
 }
 
-func newMux() (*memStore, *goji.Mux) {
+func newMux() (*MemStore, *goji.Mux) {
 	ms := NewMemStore()
 
 	// create session middleware
@@ -92,16 +92,16 @@ func TestHandler(t *testing.T) {
 	if "[no name]" != strings.TrimSpace(r0.Body.String()) {
 		t.Fatalf("expected [no name], got: '%s'", r0.Body.String())
 	}
-	if len(ms.data) != 1 {
-		t.Fatalf("ms.data should be length 1")
+	if len(ms.Data) != 1 {
+		t.Fatalf("ms.Data should be length 1")
 	}
 
 	r1, _ := get(mux, "/id", cookie, t)
 	check(200, r1, t)
 	sessID := strings.TrimSpace(r1.Body.String())
-	sess, ok := ms.data[sessID].(map[string]interface{})
+	sess, ok := ms.Data[sessID].(map[string]interface{})
 	if !ok {
-		t.Fatalf("ms.data should contain %s of type map[string]interface{}", sessID)
+		t.Fatalf("ms.Data should contain %s of type map[string]interface{}", sessID)
 	}
 
 	r2, _ := get(mux, "/set/foo", cookie, t)
@@ -109,8 +109,8 @@ func TestHandler(t *testing.T) {
 	if "saved foo" != strings.TrimSpace(r2.Body.String()) {
 		t.Fatalf("expected saved foo")
 	}
-	if len(ms.data) != 1 {
-		t.Fatalf("ms.data should be length 1")
+	if len(ms.Data) != 1 {
+		t.Fatalf("ms.Data should be length 1")
 	}
 	if n, ok := sess["name"]; !ok || "foo" != n {
 		t.Fatalf("sess[name] should be foo")
@@ -121,8 +121,8 @@ func TestHandler(t *testing.T) {
 	if "deleted" != strings.TrimSpace(r3.Body.String()) {
 		t.Fatalf("expected deleted")
 	}
-	if len(ms.data) != 1 {
-		t.Fatalf("ms.data should be length 1")
+	if len(ms.Data) != 1 {
+		t.Fatalf("ms.Data should be length 1")
 	}
 	if _, ok := sess["name"]; ok {
 		t.Fatalf("sess[name] should not be defined")
@@ -133,8 +133,8 @@ func TestHandler(t *testing.T) {
 	if "[no name]" != strings.TrimSpace(r4.Body.String()) {
 		t.Fatalf("expected [no name], got: '%s'", r4.Body.String())
 	}
-	if len(ms.data) != 1 {
-		t.Fatalf("ms.data should be length 1")
+	if len(ms.Data) != 1 {
+		t.Fatalf("ms.Data should be length 1")
 	}
 
 	r5, _ := get(mux, "/destroy", cookie, t)
