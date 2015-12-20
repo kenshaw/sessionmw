@@ -49,8 +49,8 @@ func (e *Error) Error() string {
 }
 
 // New creates a RedisStore, and creates a redis connection pool for the
-// supplied redis url. Written/read data will be read DefaultKeyPrefix or the
-// provided key prefix.
+// supplied redis url. Written/read data in the store use the DefaultKeyPrefix
+// or the provided key prefix for key retrieval/storage.
 func New(redisURL string, keyPrefix ...string) (*RedisStore, error) {
 	// determine key prefix
 	keyPrefixVal := ""
