@@ -19,7 +19,7 @@ directory.
 The sessionmw package can be used similarly to the following:
 
 ```go
-// example/simple/simple.go
+// examples/simple/simple.go
 package main
 
 import (
