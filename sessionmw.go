@@ -107,7 +107,7 @@ func Destroy(ctxt context.Context, res ...http.ResponseWriter) error {
 		})
 	}
 
-	return st.Destroy(sessID)
+	return st.Erase(sessID)
 }
 
 // Config contains the configuration parameters for the session middleware.
@@ -252,8 +252,16 @@ func (s *sessMiddleware) getSession(ctxt context.Context, res http.ResponseWrite
 	}
 
 	// retrieve session from storage
-	d, err := s.st.Get(sessID)
+	d, err := s.st.Read(sessID)
 	if err != nil {
+		return sessID, session{
+			data: make(map[string]interface{}),
+		}, true
+	}
+
+	// cast to correct value
+	sessData, ok := d.(map[string]interface{})
+	if !ok {
 		return sessID, session{
 			data: make(map[string]interface{}),
 		}, true
@@ -261,7 +269,7 @@ func (s *sessMiddleware) getSession(ctxt context.Context, res http.ResponseWrite
 
 	// FIXME: do logic here for determining when to refresh
 	var refresh = false
-	return sessID, session{data: d}, refresh
+	return sessID, session{data: sessData}, refresh
 }
 
 // ServeHTTPC handles the actual session middleware logic.
@@ -302,7 +310,7 @@ func (s *sessMiddleware) ServeHTTPC(ctxt context.Context, res http.ResponseWrite
 	s.h.ServeHTTPC(ctxt, res, req)
 
 	// save session
-	s.st.Save(sessID, sess.data)
+	s.st.Write(sessID, sess.data)
 }
 
 // defaultIDGen is the default session id generation func.

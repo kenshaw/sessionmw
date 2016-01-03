@@ -7,30 +7,33 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/knq/sessionmw"
-	"github.com/knq/sessionmw/redisstore"
 	"goji.io"
 	"goji.io/pat"
 	"golang.org/x/net/context"
+
+	"github.com/knq/kv/redisstore"
+	"github.com/knq/sessionmw"
 )
 
 func main() {
-	rs, err := redisstore.New("redis://localhost:6379")
+	rs, err := redisstore.New(
+		"redis://localhost:6379", // url for server
+		"SESS_",                  // key prefix
+	)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
 	// create session middleware
-	sessConfig := &sessionmw.Config{
+	conf := &sessionmw.Config{
 		Secret:      []byte("LymWKG0UvJFCiXLHdeYJTR1xaAcRvrf7"),
 		BlockSecret: []byte("NxyECgzxiYdMhMbsBrUcAAbyBuqKDrpp"),
-
-		Store: rs,
+		Store:       rs,
 	}
 
 	// create goji mux and add sessionmw
 	mux := goji.NewMux()
-	mux.UseC(sessConfig.Handler)
+	mux.UseC(conf.Handler)
 
 	// add handlers
 	mux.HandleFuncC(pat.Get("/set/:name"), func(ctxt context.Context, res http.ResponseWriter, req *http.Request) {

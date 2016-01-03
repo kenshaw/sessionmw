@@ -16,6 +16,7 @@ import (
 	"goji.io"
 
 	"github.com/knq/baseconv"
+	"github.com/knq/kv"
 )
 
 const cookieName = "sessionmw_test"
@@ -40,8 +41,8 @@ func TestDefaultIDGen(t *testing.T) {
 	}
 }
 
-func newMux() (*MemStore, *goji.Mux) {
-	ms := NewMemStore()
+func newMux() (*kv.MemStore, *goji.Mux) {
+	ms := kv.NewMemStore()
 
 	// create session middleware
 	conf := &Config{

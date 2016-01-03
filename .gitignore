@@ -1,6 +1,6 @@
 coverage.out
 cstore
-example/simple/simple
-example/redis/redis
-example/gcache/gcache
-example/simpledb/simpledb
+examples/simple/simple
+examples/redis/redis
+examples/gcache/gcache
+examples/simpledb/simpledb

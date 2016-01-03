@@ -6,24 +6,25 @@ import (
 	"html"
 	"net/http"
 
-	"github.com/knq/sessionmw"
 	"goji.io"
 	"goji.io/pat"
 	"golang.org/x/net/context"
+
+	"github.com/knq/kv"
+	"github.com/knq/sessionmw"
 )
 
 func main() {
 	// create session middleware
-	sessConfig := &sessionmw.Config{
+	conf := &sessionmw.Config{
 		Secret:      []byte("LymWKG0UvJFCiXLHdeYJTR1xaAcRvrf7"),
 		BlockSecret: []byte("NxyECgzxiYdMhMbsBrUcAAbyBuqKDrpp"),
-
-		Store: sessionmw.NewMemStore(),
+		Store:       kv.NewMemStore(),
 	}
 
 	// create goji mux and add sessionmw
 	mux := goji.NewMux()
-	mux.UseC(sessConfig.Handler)
+	mux.UseC(conf.Handler)
 
 	// add handlers
 	mux.HandleFuncC(pat.Get("/set/:name"), func(ctxt context.Context, res http.ResponseWriter, req *http.Request) {
