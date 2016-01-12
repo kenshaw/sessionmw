@@ -162,9 +162,9 @@ func (c Config) Handler(h goji.Handler) goji.Handler {
 	sc := securecookie.New(c.Secret, c.BlockSecret)
 	sc.MaxAge(int(c.MaxAge))
 
-	idFn := defaultIDGen
-	if c.IDFn != nil {
-		idFn = c.IDFn
+	idFn := c.IDFn
+	if idFn == nil {
+		idFn = defaultIDGen
 	}
 
 	name := c.Name
