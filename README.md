@@ -28,6 +28,7 @@ import (
     "net/http"
 
     "github.com/knq/sessionmw"
+    "github.com/knq/kv"
     "goji.io"
     "goji.io/pat"
     "golang.org/x/net/context"
@@ -39,7 +40,7 @@ func main() {
         Secret:      []byte("LymWKG0UvJFCiXLHdeYJTR1xaAcRvrf7"),
         BlockSecret: []byte("NxyECgzxiYdMhMbsBrUcAAbyBuqKDrpp"),
 
-        Store: sessionmw.NewMemStore(),
+        Store: kv.NewMemStore(),
     }
 
     // create goji mux and add sessionmw
@@ -68,7 +69,7 @@ func main() {
 
 ## TODO ##
 
-* Finish writing unit tests.
-* Finish json store and example.
-* Finish [groupcache](https://github.com/golang/groupcache) store and example.
-* Finish simple database store and example.
+- [ ] Finish writing unit tests.
+- [ ] Finish json store and example.
+- [ ] Finish [groupcache](https://github.com/golang/groupcache) store and example.
+- [ ] Finish simple database store and example.
